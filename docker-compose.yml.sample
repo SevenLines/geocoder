@@ -5,5 +5,6 @@ services:
     ports:
       - "8432:5432"
     environment:
+      - OSM_PBF_URL=http://download.geofabrik.de/russia/siberian-fed-district-latest.osm.pbf
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=osm_data

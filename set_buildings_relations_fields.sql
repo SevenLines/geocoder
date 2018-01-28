@@ -1,7 +1,10 @@
+-- SET default search config
+SET default_text_search_config TO 'russian';
+
+-- add center of geometry field
 ALTER TABLE osm_buildings ADD COLUMN center geometry(Geometry, 3857);
 UPDATE osm_buildings
 SET center = st_centroid(geometry);
-
 
 -- UPDATE city field
 UPDATE osm_buildings b
