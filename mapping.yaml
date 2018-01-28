@@ -1,0 +1,48 @@
+tables:
+  buildings:
+    type: "polygon" # тип георметии используемый для таблицы
+    mapping: # фильтрация по наличия поля, и значению в этом поле
+      building: [__any__]
+    columns: # перечисляем поля таблицы
+      - {name: osm_id, type: id}
+      - {name: geometry, type: geometry}
+      - {name: type, type: mapping_value}
+      - {key: name, name: name, type: string}
+      - {key: "addr:street", name: street, type: string}
+      - {key: "addr:postcode", name: postcode, type: string}
+      - {key: "addr:city", name: city, type: string}
+      - {key: "addr:housenumber", name: housenumber, type: string}
+      - {key: "addr:quarter", name: quarter, type: string}
+      - {key: "addr:neighbourhood", name: neighbourhood, type: string}
+      - {key: "addr:suburb", name: suburb, type: string}
+      - {key: "addr:allotments", name: allotments, type: string}
+      - {key: "addr:hamlet", name: hamlet, type: string}
+      - {key: "addr:village", name: village, type: string}
+      - {key: "addr:town", name: town, type: string}
+
+      - {name: city_id, type: integer}
+  cities:
+    type: "polygon"
+    mapping:
+      place:
+        - city                 # крупные города
+        - town                 # средний или малый город
+        - village              # посёлок городского типа
+        - hamlet               # Любой сельский населённый пункт размером от двух-трёх домашних хозяйств, не подходящий под критерии village
+        - allotments           # всякие  СНТ, ДНТ и т.п.
+        - isolated_dwelling    # хутор
+        - neighbourhood        # микрорайоны, кварталы и т.п.
+        - suburb               # пригороды
+        - locality             # заброшенные деревни, урочище
+    columns:
+      - {name: osm_id, type: id}
+      - {name: geometry, type: geometry}
+      - {name: type, type: mapping_value}
+      - {key: name, name: name, type: string}
+      - {key: "addr:country", name: country, type: string}
+      - {key: "addr:district", name: district, type: string}
+      - {key: "addr:region", name: region, type: string}
+      - {key: "addr:postcode", name: postcode, type: string}
+      - {key: population, name: population, type: string}
+      - {key: "population:date", name: population_date, type: string}
+      - {key: official_status, name: official_status, type: string}

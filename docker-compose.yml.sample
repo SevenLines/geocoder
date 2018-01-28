@@ -1,0 +1,9 @@
+version: "3.0"
+services:
+  geocoderdb:
+    build: .
+    ports:
+      - "8432:5432"
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=osm_data
