@@ -80,7 +80,7 @@ create table osm_words
 
 -- fill the table
 INSERT INTO osm_words
-SELECT * FROM  ts_stat('SELECT make_tsvector('', street, city) FROM osm_buildings')
+SELECT * FROM  ts_stat('SELECT make_tsvector('''', street, city) FROM osm_buildings');
 -- END create words table
 
 -- GEOCODING FUNCTION
@@ -90,7 +90,7 @@ IMMUTABLE
 LANGUAGE SQL
 AS $$
 WITH phrase AS (
-    SELECT unnest(tsvector_to_array(to_tsvector(address))) AS word
+    SELECT unnest(tsvector_to_array(to_tsvector(regexp_replace(address, '[ёЁ]', 'е', 'g')))) AS word
 ), words AS (
     SELECT
       CASE WHEN wrd.word ~ '^[0-9\.]+$'
