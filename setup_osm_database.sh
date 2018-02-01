@@ -14,4 +14,4 @@ imposm3 import -mapping mapping.yaml -dbschema-import public \
     -read data.osm.pbf -write -overwritecache
 
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB"  < set_buildings_relations_fields.sql
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB"  < initdb.sql

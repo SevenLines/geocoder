@@ -5,6 +5,6 @@ services:
     ports:
       - "8432:5432"
     environment:
-      - OSM_PBF_URL=http://download.geofabrik.de/europe/monaco-latest.osm.pbf
+      - OSM_PBF_URL=http://download.geofabrik.de/europe/monaco-latest.osm.pbf  # change this url to the one which data you want to fetch
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=osm_data

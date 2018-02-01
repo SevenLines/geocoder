@@ -46,18 +46,38 @@ WITH thesaurus_russian_osm, pg_catalog.russian_stem;
 -- END add thesaurus_russian_osm
 
 -- CREATE ts_vector_function
-CREATE OR REPLACE FUNCTION make_tsvector(housenumber TEXT, street TEXT, city TEXT)
-  RETURNS TSVECTOR AS $$
+CREATE OR REPLACE FUNCTION make_tsvector(housenumber text, street text, city text)
+  RETURNS tsvector
+IMMUTABLE
+LANGUAGE plpgsql
+AS $$
 BEGIN
-  RETURN (setweight(to_tsvector(housenumber), 'C') || setweight(to_tsvector(street), 'B') ||
-          setweight(to_tsvector(city), 'A'));
+  RETURN (setweight(to_tsvector(housenumber), 'C')
+          || setweight(to_tsvector(street), 'B')
+          || setweight(to_tsvector(city), 'A'));
 END
-$$
-LANGUAGE 'plpgsql'
-IMMUTABLE;
+$$;
 -- END CREATE ts_vector_function
 
 -- ADD INDEX on address
+DROP INDEX IF EXISTS osm_buildings_address_gin_index;
 CREATE INDEX IF NOT EXISTS osm_buildings_address_gin_index
   ON osm_buildings USING GIN (make_tsvector(housenumber, street, city));
 -- END ADD INDEX
+
+
+-- BEGIN create words table
+create table osm_words
+(
+  word text not null
+    constraint osm_words_pkey
+    primary key,
+  docs integer,
+  entity integer
+)
+;
+
+-- fill the table
+INSERT INTO osm_words
+SELECT * FROM  ts_stat('SELECT make_tsvector('', street, city) FROM osm_buildings')
+-- END create words table

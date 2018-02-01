@@ -23,13 +23,11 @@ ENV PATH="${GOPATH}/bin:/usr/local/go/bin:${PATH}"
 RUN go get github.com/omniscale/imposm3 && \
     go install github.com/omniscale/imposm3/cmd/imposm3
 
-#ARG OSM_PBF_URL
-#RUN curl -o data.osm.pbf $OSM_PBF_URL
 
 RUN mkdir /app && chown postgres:postgres /app
 COPY thesaurus_russian_osm.ths /usr/share/postgresql/9.6/tsearch_data/
 
 USER postgres
 COPY mapping.yaml /app
-COPY set_buildings_relations_fields.sql /app
+COPY initdb.sql /app
 COPY setup_osm_database.sh /docker-entrypoint-initdb.d/
