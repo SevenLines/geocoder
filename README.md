@@ -5,10 +5,13 @@ imposm-geocoder-database
 Развернув данный образ и подключившись к базе данных можно геокодировать адреса следующим образом.
 
 ```sql
-SELECT st_y(st_transform(center, 4674)) as lat, st_x(st_transform(center, 4674)) as lon
-FROM osm_buildings
-WHERE make_tsvector(housenumber, street, city) @@ plainto_tsquery('ул. Байкальская 100 г Иркутск')
-LIMIT 1;
+SELECT geocode('Иркутск Лермонтова 100');
+```
+
+Получаем в ответ:
+
+```
+{"id" : 69126, "lon" : 104.259006087003, "lat" : 52.2612147957904}
 ```
 
 Установка
