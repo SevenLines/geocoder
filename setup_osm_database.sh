@@ -2,7 +2,9 @@
 set -e
 
 cd /app
-curl -o data.osm.pbf "$OSM_PBF_URL"
+aria2c -o data.osm.pbf -x10 -s10 "$OSM_PBF_URL"
+
+sed -i "/default_text_search_config/c default_text_search_config = 'pg_catalog.russian'" /var/lib/postgresql/data/postgresql.conf
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
     CREATE EXTENSION IF NOT EXISTS postgis;
